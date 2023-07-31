@@ -428,6 +428,15 @@ hdfsFS hdfsBuilderConnect(struct hdfsBuilder * bld) {
         /*
          * handle scheme
          */
+        // viewfs_cluster_606
+        if (0 == strcasecmp(bld->nn.substr(0, 6).c_str(), "viewfs")) {
+            auto defaultPrefix = bld->nn.substr(7, bld->nn.find("_")+1);
+            auto suffix = bld->nn.substr(bld->nn.find("_", bld->nn.find("_")+1)+1, -1);; // TODO: get from uri
+            auto cfg = bld->conf;
+            std::string realPath = cfg->getStringPrefix(defaultPrefix.c_str(), suffix.c_str());
+            bld->nn = realPath;
+        }
+
         if (bld->nn.find("://") == bld->nn.npos) {
             uri  = "hdfs://";
         }

@@ -225,6 +225,23 @@ const char * Config::getString(const char * key) const {
     return it->second.c_str();
 }
 
+const char * Config::getStringPrefix(const char * mid, const char * key_suffix) const {
+    bool find = false;
+    std::string path= "";
+    for(const auto & key : kv) {
+        if (key.first.find(mid) != std::string::npos && key.first.ends_with(key_suffix)) {
+              find = true;
+	      path = key.second;
+        }
+    }
+
+    if (!find) {
+        THROW(HdfsConfigNotFound, "Config key: %s not found", key_suffix);
+    }
+
+    return path.c_str();
+}
+
 const char * Config::getString(const char * key, const char * def) const {
     Iterator it = kv.find(key);
 

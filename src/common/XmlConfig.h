@@ -68,6 +68,14 @@ public:
     const char * getString(const char * key) const;
 
     /**
+     * Get a string with given configure key suffix.
+     * @param key The key of the configure item.
+     * @return The value of configure item.
+     * @throw HdfsConfigNotFound
+     */
+    const char * getStringPrefix(const char * mid, const char * key_suffix) const;
+
+    /**
      * Get a string with given configure key.
      * Return the default value def if key is not found.
      * @param key The key of the configure item.
