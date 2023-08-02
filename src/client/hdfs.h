@@ -534,6 +534,18 @@ hdfsFileInfo * hdfsListDirectory(hdfsFS fs, const char * path, int * numEntries)
 hdfsFileInfo * hdfsGetPathInfo(hdfsFS fs, const char * path);
 
 /**
+ * hdfsUpdateURIForViewFS - Get information about a path as a (dynamically
+ * allocated) single hdfsFileInfo struct. hdfsFreeFileInfo should be
+ * called when the pointer is no longer needed.
+ * @param fs The configured filesystem handle.
+ * @param path The path of the file.
+ * @return Returns a dynamically-allocated hdfsFileInfo object;
+ * NULL on error.
+ */
+char * hdfsUpdateURIForViewFS(hdfsFS fs, const char * path);
+
+
+/**
  * hdfsFreeFileInfo - Free up the hdfsFileInfo array (including fields)
  * @param infos The array of dynamically-allocated hdfsFileInfo
  * objects.

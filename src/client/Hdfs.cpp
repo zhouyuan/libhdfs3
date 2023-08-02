@@ -435,6 +435,9 @@ hdfsFS hdfsBuilderConnect(struct hdfsBuilder * bld) {
             auto cfg = bld->conf;
             std::string realPath = cfg->getStringPrefix(defaultPrefix.c_str(), suffix.c_str());
             bld->nn = realPath;
+            // get suffix hdfs://sr606:8020/tpch -> tpch
+            auto viewFSSuffix = realPath.substr(realPath.find("/", realPath.find("://")+3)+1, -1);
+            cfg->set("viewFSSuffix", viewFSSuffix);
         }
 
         if (bld->nn.find("://") == bld->nn.npos) {
@@ -1114,6 +1117,25 @@ hdfsFileInfo * hdfsGetPathInfo(hdfsFS fs, const char * path) {
         SetErrorMessage("Out of memory");
         hdfsFreeFileInfo(retval, 1);
         errno = ENOMEM;
+    } catch (...) {
+        SetLastException(Hdfs::current_exception());
+        hdfsFreeFileInfo(retval, 1);
+        handleException(Hdfs::current_exception());
+    }
+
+    return NULL;
+}
+
+char * hdfsUpdateURIForViewFS(hdfsFS fs, const char * path) {
+    PARAMETER_ASSERT(fs && path && strlen(path) > 0, NULL, EINVAL);
+    hdfsFileInfo * retval = NULL;
+    std::string suffix;
+    std::string key;
+
+    try {
+       
+       hdfsConfGetStr("viewFSSuffix", &suffix.c_str())
+       auto newPath = std::regex_replace(std::string(path), key, suffix);
     } catch (...) {
         SetLastException(Hdfs::current_exception());
         hdfsFreeFileInfo(retval, 1);
