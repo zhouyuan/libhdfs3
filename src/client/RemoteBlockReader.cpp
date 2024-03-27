@@ -383,7 +383,7 @@ void RemoteBlockReader::sendStatus() {
         std::string indata;
         int size = buffer.getDataSize(0);
         indata.resize(size);
-        memcpy(indata.data(), buffer.getBuffer(0), size);
+        memcpy((void*)indata.data(), buffer.getBuffer(0), size);
         std::string data = sender->wrap(indata);
         WriteBuffer buffer2;
         if (sender->needsLength()) {

@@ -107,7 +107,7 @@ void Logger::printf(LogSeverity s, const char * fmt, ...) {
                         1 + tm_time.tm_mon, tm_time.tm_mday, tm_time.tm_hour,
                         tm_time.tm_min, tm_time.tm_sec, static_cast<long>(tval.tv_usec), ProcessId, SeverityName[s]);
         va_start(ap, fmt);
-        size += vsnprintf(buffer.data() + size, buffer.size() - size, fmt, ap);
+        size += vsnprintf((char*)buffer.data() + size, buffer.size() - size, fmt, ap);
         va_end(ap);
         if (enable_logging) {
             lock_guard<mutex> lock(LoggerMutex);

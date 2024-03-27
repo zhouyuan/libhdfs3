@@ -97,6 +97,8 @@ using Hdfs::FileSystem;
 using Hdfs::exception_ptr;
 using Hdfs::Config;
 using Hdfs::Internal::shared_ptr;
+using Hdfs::Internal::UserInfo;
+using Hdfs::Internal::Token;
 using Hdfs::NamenodeInfo;
 using Hdfs::FileNotFoundException;
 
